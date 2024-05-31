@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .drag {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: pink;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="drag" class="drag"></div>
+</body>
+<script>
+  // 三个事件
+  // 鼠标按下：onmousedown
+  // 鼠标移动：onmouseover|onmousemove
+  // 鼠标方式：onmouseup
+  var drag = document.getElementById('drag');
+  drag.onmousedown = function (e) {
+    // 按下时候鼠标位置距离浏览器左侧的距离 - 盒子左侧距离浏览器的位置
+    var x = e.clientX - drag.offsetLeft;
+    // 按下时候鼠标位置距离浏览器顶部的距离 - 盒子顶部距离浏览器的位置
+    var y = e.clientY - drag.offsetTop;
+    document.onmousemove = function (e) {
+      // 鼠标距离浏览器左侧的距离值
+      var l = e.clientX - x;
+      // 鼠标距离浏览器顶部的距离值
+      var t = e.clientY - y;
+      if (l < 0) {
+        l = 0;
+      }else if (l > document.documentElement.clientWidth - drag.offsetWidth) {
+        l = document.documentElement.clientWidth - drag.offsetWidth
+      }
+      if (t < 0) {
+        t = 0;
+      }else if (t > document.documentElement.clientHeight - drag.offsetHeight) {
+        t = document.documentElement.clientHeight - drag.offsetHeight
+      }
+      drag.style.left = l + 'px';
+      drag.style.top = t + 'px';
+    }
+  }
+  drag.onmouseup = function () {
+    document.onmousemove = null;
+  }
+</script>
+
+</html>
