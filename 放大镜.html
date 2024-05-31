@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>放大镜</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .u-l {
+      float: left;
+    }
+
+    .mian {
+      margin: 150px;
+    }
+
+    .s-img {
+      position: relative;
+      width: 400px;
+      height: 400px;
+    }
+
+    .s-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .s-img span {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 200px;
+      height: 200px;
+      background: #fff;
+      opacity: 0.5;
+    }
+
+    .p-img {
+      position: relative;
+      display: none;
+      margin-left: 30px;
+      width: 400px;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .p-img img {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main" id="main">
+    <!-- 小图 -->
+    <div class="s-img u-l" id="sImg">
+      <img src="images/400.jpg" alt="">
+      <span class="lens" id="lens"></span>
+    </div>
+    <!-- 大图 -->
+    <div class="p-img u-l" id="pImg">
+      <img src="images/800.jpg" alt="" id="picImg">
+    </div>
+  </div>
+</body>
+<script>
+  // 小盒子
+  var sImg = document.getElementById('sImg');
+  // 阴影
+  var lens = document.getElementById('lens');
+  // 大盒子
+  var pImg = document.getElementById('pImg');
+  // main节点
+  var main = document.getElementById('main');
+  // 大图片
+  var picImg = document.getElementById('picImg');
+  // 给小盒子加入鼠标移入事件，让阴影和大盒子显示
+  sImg.onmouseover = function () {
+    lens.style.display = 'block';
+    pImg.style.display = 'block';
+  }
+  sImg.onmousemove = function (e) {
+
+    // 当前鼠标的位置 - 盒子距离浏览器左侧的偏移 - 阴影宽度的一半
+    var x = e.clientX - main.offsetLeft - lens.offsetWidth / 2;
+
+    var y = e.clientY - main.offsetTop - lens.offsetHeight / 2;
+    if (x < 0) {
+      x = 0;
+    } else if (x > sImg.offsetWidth - lens.offsetWidth) {
+      x = sImg.offsetWidth - lens.offsetWidth
+    }
+    if (y < 0) {
+      y = 0;
+    } else if (y > sImg.offsetHeight - lens.offsetHeight) {
+      y = sImg.offsetHeight - lens.offsetHeight
+    }
+    // 阴影位置
+    lens.style.left = x + 'px';
+    lens.style.top = y + 'px';
+    // 大图片位置
+    picImg.style.left = -x * 2 + 'px';
+    picImg.style.top = -y * 2 + 'px';
+  }
+  sImg.onmouseout = function () {
+    lens.style.display = 'none';
+    pImg.style.display = 'none';
+  }
+</script>
+
+</html>
