@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	*{
+		margin:0;
+		padding:0;
+	}
+	ul{
+		list-style: none;
+	}
+	.clearfix:after{
+		content: '';
+		clear: both;
+		display: block;
+	}
+	ul li{
+		float:left;
+		width:100px;
+		height: 100px;
+		line-height: 100px;
+		text-align: center;
+	}
+	.scroll-x{
+		width:300px;
+		height: 100px;
+		border:1px solid #ccc;
+		overflow: hidden;
+	}
+
+	.scroll-y{
+		width:100px;
+		height: 300px;
+		border:1px solid #ccc;
+		overflow: hidden;
+	}
+
+	</style>
+</head>
+<body>
+
+
+<div class='scroll-x' id='scrollX'>
+	<ul class='clearfix'>
+		<li>11111</li>
+		<li>22222</li>
+		<li>33333</li>
+		<li>44444</li>
+		<li>55555</li>
+	</ul>
+</div>
+
+
+<div class='scroll-y' id='scrollY'>
+	<ul class='clearfix'>
+		<li>11111</li>
+		<li>22222</li>
+		<li>33333</li>
+		<li>44444</li>
+		<li>55555</li>
+	</ul>
+</div>
+
+
+
+<script type="text/javascript">
+/*
+var scrollX = document.getElementById('scrollX');
+var ul = scrollX.getElementsByTagName('ul')[0];
+var lis = ul.getElementsByTagName('li');
+//记录一个下标
+var index = 0;
+
+
+var lis_num = lis.length;
+var lis_width = lis[0].offsetWidth;
+//计算ul的总宽度 = li的个数 * 其中一个li的宽度
+ul.style.width = lis_num*lis_width+'px';
+
+
+
+//开始滚动
+setInterval(function(){
+
+	index--;
+
+	ul.style.marginLeft = index+'px';
+
+	if( Math.abs(index) >= lis_width ){
+		ul.appendChild( ul.firstElementChild )
+		index=0;
+		ul.style.marginLeft = '0px';
+	}
+
+},5);
+*/
+
+function Scroll(options){
+
+	this.el = options.el;
+	this.direction = options.direction;
+
+	//获取节点
+	this.scrollX = document.getElementById(this.el);
+	this.ul = this.scrollX.getElementsByTagName('ul')[0];
+	this.lis = this.ul.getElementsByTagName('li');
+	//记录下标
+	this.index = 0;
+
+	//执行初始化init
+	this.init();
+}
+
+Scroll.prototype = {
+
+	//初始化--》判断执行定时器
+	init:function(){
+
+		if( this.direction =='x' ){
+			//计算宽度
+			this.change('width','offsetWidth','marginLeft');
+
+		}else if(   this.direction =='y'  ){
+			//计算高度
+			this.change('height','offsetHeight','marginTop');
+		}
+
+	},
+	//计算宽度和高度 以及  滚动
+	change:function(attr,offset,margin){
+		this.lis_num = this.lis.length;
+		this.lis_attr = this.lis[0][offset];
+		//计算ul的总宽度 = li的个数 * 其中一个li的宽度
+		this.ul.style[attr] = this.lis_num*this.lis_attr+'px';
+
+		//改变this指向
+		var That = this;
+		//定时器
+		setInterval(function(){
+
+			That.index--;
+
+			That.ul.style[margin] = That.index+'px';
+
+			if( Math.abs(That.index) >= That.lis_attr ){
+				That.ul.appendChild( That.ul.firstElementChild )
+				That.index=0;
+				That.ul.style[margin] = '0px';
+			}
+
+		},5);
+
+	}
+
+}
+
+new Scroll({
+	el:'scrollX',
+	direction:'x',
+});
+
+new Scroll({
+	el:'scrollY',
+	direction:'y',
+});
+
+
+</script>
+
+
+</body>
+</html>
